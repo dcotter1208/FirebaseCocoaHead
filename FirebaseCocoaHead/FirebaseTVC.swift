@@ -19,10 +19,9 @@ class FirebaseTVC: UITableViewController {
         super.viewDidLoad()
         
         firebaseReference = FIRDatabase.database().reference()
-
-        queryNamesFromFirebase()
         
-        testChildChanged()
+        queryNamesFromFirebase()
+        listenForChildNodeChanges()
         
     }
 
@@ -81,8 +80,6 @@ class FirebaseTVC: UITableViewController {
     
     //Accepts a query to listen for a change.
     func listenForChildNodeChanges(query: FIRDatabaseQuery, completion:(result:FIRDataSnapshot)-> Void) {
-        
-//        let childRef = firebaseReference.child("names")
 
         query.observeEventType(.ChildChanged) {
             (snapshot) in
@@ -105,14 +102,11 @@ class FirebaseTVC: UITableViewController {
         }
         
         alertController.addAction(save)
-        
         presentViewController(alertController, animated: true, completion: nil)
-
-        
     }
 
     
-    func testChildChanged() {
+    func listenForChildNodeChanges() {
         let childRef = self.firebaseReference.child("names")
         childRef.observeEventType(.ChildChanged, withBlock: { (snapshot: FIRDataSnapshot) in
             
@@ -150,14 +144,12 @@ class FirebaseTVC: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         let personToUpdate = people[indexPath.row]
         
         alertWithTextEntry("Update Name") { (text) in
             self.updateChildValue(personToUpdate, updatedName: text)
 
         }
-        
     }
     
     //MARK: IBActions
@@ -166,9 +158,7 @@ class FirebaseTVC: UITableViewController {
         
         alertWithTextEntry("Enter Name") { (text) in
             self.saveTextToFirebase(text)
-
         }
-        
     }
 
 }
