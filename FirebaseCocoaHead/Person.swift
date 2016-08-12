@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Person {
-    let name:String
+class Person {
+    var name:String
     let snapshotKey:String
     
     init(name:String, snapshotKey: String) {
