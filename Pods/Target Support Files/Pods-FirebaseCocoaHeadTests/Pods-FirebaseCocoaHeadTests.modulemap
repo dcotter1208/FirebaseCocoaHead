@@ -1,0 +1,6 @@
+framework module Pods_FirebaseCocoaHeadTests {
+  umbrella header "Pods-FirebaseCocoaHeadTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
