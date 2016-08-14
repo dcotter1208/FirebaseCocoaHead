@@ -9,6 +9,7 @@ target 'FirebaseCocoaHead' do
 
 pod 'Firebase'
 pod 'Firebase/Database'
+pod 'Firebase/Storage’
 
   target 'FirebaseCocoaHeadTests' do
     inherit! :search_paths
