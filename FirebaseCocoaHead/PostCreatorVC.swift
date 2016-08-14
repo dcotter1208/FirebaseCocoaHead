@@ -24,25 +24,11 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let post = post {
-            let imageData = NSData(contentsOfURL: NSURL(string: post.photoURL)!)
-            postImageView.image = UIImage(data: imageData!)
-            postTextView.text = post.text
-        }
-        
-        if post != nil {
-            rightBarButton.title = "Update"
-        } else {
-            rightBarButton.title = "Save"
-        }
-        
         postImageView.layer.masksToBounds = true
         
-        firebaseReference = FIRDatabase.database().reference()
-        storage = FIRStorage.storage()
-        firebaseStorageRef = storage.referenceForURL("gs://cocoahead-1f648.appspot.com")
-        
+        setImageAndPostForUpdate()
+        setRightBarButtonTitle()
+        createDatabaseAndStorageRefs()
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,6 +36,33 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
         // Dispose of any resources that can be recreated.
     }
     
+    func createDatabaseAndStorageRefs() {
+        firebaseReference = FIRDatabase.database().reference()
+        storage = FIRStorage.storage()
+        firebaseStorageRef = storage.referenceForURL("gs://cocoahead-1f648.appspot.com")
+        
+    }
+    
+    func setImageAndPostForUpdate() {
+        if let post = post {
+            let imageData = NSData(contentsOfURL: NSURL(string: post.photoURL)!)
+            postImageView.image = UIImage(data: imageData!)
+            postTextView.text = post.text
+        }
+    }
+    
+    func setRightBarButtonTitle() {
+        if post != nil {
+            rightBarButton.title = "Update"
+        } else {
+            rightBarButton.title = "Save"
+        }
+    }
+    
+/*
+     Used to upload the photo to Firebase. Once its uploaded and returns the
+     downloadURL it then saves the post to the Firebase database
+*/
     func uploadPhotoToFirebase(imageAsData: NSData) {
         let uniqueID = NSUUID().UUIDString
         let newImageReference = "images/\(uniqueID).jpg"
@@ -71,29 +84,24 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
                 }
             }
         }
-        
         uploadTask.resume()
-        
     }
     
+/*
+     Saves the post to Firebase. This is called in the
+     uploadPhotoToFirebase once the photo is uploaded.
+*/
     func savePostToFirebase(text: String, photoURL: String) {
-        
         let childRef = firebaseReference.child("posts").childByAutoId()
- 
         let post = ["text": text, "photoURL":photoURL]
-        
         childRef.setValue(post)
     }
     
-    //Update on Firebase
+    //Update post on Firebase
     func updateChildValue(postToUpdate: Post, updatedText: String, updatedPhotoURL: String) {
-        
         let childRef = firebaseReference.child("posts")
-        
         let childUpdates = [postToUpdate.snapshotKey:["text":updatedText, "photoURL": updatedPhotoURL]]
-        
         childRef.updateChildValues(childUpdates)
-        
     }
     
     func presentCamera() {
@@ -109,27 +117,21 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
             imageData = UIImageJPEGRepresentation(pickedImage, 1.0)!
         }
         self.dismissViewControllerAnimated(true, completion: nil)
-
     }
     
     
     @IBAction func photoTapGesturePressed(sender: AnyObject) {
-        
         presentCamera()
-        
     }
     
     
     @IBAction func savePressed(sender: AnyObject) {
-        
         uploadPhotoToFirebase(imageData)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func cancelPressed(sender: AnyObject) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
 
 
