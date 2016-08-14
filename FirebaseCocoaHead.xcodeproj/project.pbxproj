@@ -15,7 +15,8 @@
 		64DDF8C71D5E17480073B918 /* FirebaseCocoaHeadUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DDF8C61D5E17480073B918 /* FirebaseCocoaHeadUITests.swift */; };
 		64DDF8D91D5E1B010073B918 /* FirebaseTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DDF8D81D5E1B010073B918 /* FirebaseTVC.swift */; };
 		64DDF8DB1D5E28480073B918 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64DDF8DA1D5E28480073B918 /* GoogleService-Info.plist */; };
-		64DDF8DD1D5E38730073B918 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DDF8DC1D5E38730073B918 /* Person.swift */; };
+		64DDF8DD1D5E38730073B918 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DDF8DC1D5E38730073B918 /* Post.swift */; };
+		64EEA3EF1D61015E00D908B0 /* PostCreatorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EEA3EE1D61015E00D908B0 /* PostCreatorVC.swift */; };
 		6D67D284801FEEE820934DBE /* Pods_FirebaseCocoaHeadUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 201FB344DD7EF558EF3DC70C /* Pods_FirebaseCocoaHeadUITests.framework */; };
 		7DA51838DB838A02275339DE /* Pods_FirebaseCocoaHeadTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0850F3AD6B6B46E58352E18 /* Pods_FirebaseCocoaHeadTests.framework */; };
 		E514A933B7DEC4D0C9A94B7E /* Pods_FirebaseCocoaHead.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DBC82B19FC5D8FACFF97F27 /* Pods_FirebaseCocoaHead.framework */; };
@@ -58,7 +59,8 @@
 		64DDF8C81D5E17480073B918 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64DDF8D81D5E1B010073B918 /* FirebaseTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseTVC.swift; sourceTree = "<group>"; };
 		64DDF8DA1D5E28480073B918 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		64DDF8DC1D5E38730073B918 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		64DDF8DC1D5E38730073B918 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		64EEA3EE1D61015E00D908B0 /* PostCreatorVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCreatorVC.swift; sourceTree = "<group>"; };
 		76E638081CFFECAC08EF55A7 /* Pods-FirebaseCocoaHead.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseCocoaHead.release.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseCocoaHead/Pods-FirebaseCocoaHead.release.xcconfig"; sourceTree = "<group>"; };
 		8DBC82B19FC5D8FACFF97F27 /* Pods_FirebaseCocoaHead.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FirebaseCocoaHead.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B65CE0FFDA1C4C504F5687 /* Pods-FirebaseCocoaHeadTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FirebaseCocoaHeadTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FirebaseCocoaHeadTests/Pods-FirebaseCocoaHeadTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -120,7 +122,8 @@
 			children = (
 				64DDF8A61D5E17470073B918 /* AppDelegate.swift */,
 				64DDF8D81D5E1B010073B918 /* FirebaseTVC.swift */,
-				64DDF8DC1D5E38730073B918 /* Person.swift */,
+				64EEA3EE1D61015E00D908B0 /* PostCreatorVC.swift */,
+				64DDF8DC1D5E38730073B918 /* Post.swift */,
 				64DDF8AA1D5E17470073B918 /* Main.storyboard */,
 				64DDF8AD1D5E17470073B918 /* Assets.xcassets */,
 				64DDF8AF1D5E17470073B918 /* LaunchScreen.storyboard */,
@@ -434,9 +437,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				64DDF8DD1D5E38730073B918 /* Person.swift in Sources */,
+				64DDF8DD1D5E38730073B918 /* Post.swift in Sources */,
 				64DDF8D91D5E1B010073B918 /* FirebaseTVC.swift in Sources */,
 				64DDF8A71D5E17470073B918 /* AppDelegate.swift in Sources */,
+				64EEA3EF1D61015E00D908B0 /* PostCreatorVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

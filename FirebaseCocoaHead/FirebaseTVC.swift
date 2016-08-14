@@ -12,8 +12,9 @@ import FirebaseDatabase
 
 class FirebaseTVC: UITableViewController {
 
-    var people = [Person]()
+    var posts = [Post]()
     var firebaseReference = FIRDatabaseReference()
+    var postToUpdate: Post?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,12 @@ class FirebaseTVC: UITableViewController {
         listenForChildNodeChanges()
         
     }
+    
+    
+    
+    override func viewWillAppear(animated: Bool) {
+        postToUpdate = nil
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -31,17 +38,7 @@ class FirebaseTVC: UITableViewController {
     }
     
     //MARK: Firebase Methods
-    
-    //Add to Firebase
-    func saveTextToFirebase(text: String) {
 
-        let childRef = firebaseReference.child("names").childByAutoId()
-        
-        let person = ["name": text]
-
-        childRef.setValue(person)
-    }
-    
     //Remove from Firebase
     func deleteValueForChild(child: String, childKey: String) {
         
@@ -54,39 +51,40 @@ class FirebaseTVC: UITableViewController {
     //Query from Firebase
     func queryNamesFromFirebase() {
 
-        let childRef = firebaseReference.child("names")
+        let childRef = firebaseReference.child("posts")
         
         childRef.observeEventType(.ChildAdded) {
             (snapshot: FIRDataSnapshot) in
 
             if let value = snapshot.value {
-                let person = Person(name: value["name"] as! String, snapshotKey: snapshot.key)
-                self.people.append(person)
+                
+                let post = Post(text: value["text"] as! String, photoURL: value["photoURL"] as! String, snapshotKey: snapshot.key)
+                self.posts.append(post)
                 self.tableView.reloadData()
             }
         }
     }
     
     //Update on Firebase
-    func updateChildValue(personToUpdate: Person, updatedName: String) {
+    func updateChildValue(postToUpdate: Post, updatedText: String, updatedPhotoURL: String) {
         
-        let childRef = firebaseReference.child("names")
+        let childRef = firebaseReference.child("posts")
 
-        let childUpdates = [personToUpdate.snapshotKey:["name":updatedName]]
+        let childUpdates = [postToUpdate.snapshotKey:["text":updatedText, "photoURL": updatedPhotoURL]]
         
         childRef.updateChildValues(childUpdates)
         
     }
     
-    //Accepts a query to listen for a change.
-    func listenForChildNodeChanges(query: FIRDatabaseQuery, completion:(result:FIRDataSnapshot)-> Void) {
-
-        query.observeEventType(.ChildChanged) {
-            (snapshot) in
-            completion(result: snapshot)
-        }
-    }
-    
+//    //Accepts a query to listen for a change.
+//    func listenForChildNodeChanges(query: FIRDatabaseQuery, completion:(result:FIRDataSnapshot)-> Void) {
+//
+//        query.observeEventType(.ChildChanged) {
+//            (snapshot) in
+//            completion(result: snapshot)
+//        }
+//    }
+//    
     //MARK: Helper Methods
     func alertWithTextEntry(title: String, completion:(text: String)-> Void) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
@@ -107,14 +105,15 @@ class FirebaseTVC: UITableViewController {
 
     
     func listenForChildNodeChanges() {
-        let childRef = self.firebaseReference.child("names")
+        let childRef = self.firebaseReference.child("posts")
         childRef.observeEventType(.ChildChanged, withBlock: { (snapshot: FIRDataSnapshot) in
+
+            let updatedPost = Post(text: snapshot.value!["text"] as! String, photoURL: snapshot.value!["photoURL"] as! String, snapshotKey: snapshot.key)
             
-            let updatedPerson = Person(name: snapshot.value!["name"] as! String, snapshotKey: snapshot.key)
-            
-            for person in self.people {
-                if person.snapshotKey == updatedPerson.snapshotKey {
-                    person.name = updatedPerson.name
+            for post in self.posts {
+                if post.snapshotKey == updatedPost.snapshotKey {
+                    post.text = updatedPost.text
+                    post.photoURL = updatedPost.photoURL
                 }
             }
             self.tableView.reloadData()
@@ -124,41 +123,46 @@ class FirebaseTVC: UITableViewController {
     //MARK: TableView
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return people.count
+        return posts.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-
-        cell.textLabel?.text = people[indexPath.row].name
-
+        let cellImageView = cell.contentView.viewWithTag(200) as? UIImageView
+        let cellTextView = cell.contentView.viewWithTag(100) as? UITextView
+        
+        let post = posts[indexPath.row]
+        
+        cellTextView?.text = post.text
+        
+        let imageData = NSData(contentsOfURL: NSURL(string: post.photoURL)!)
+        
+        if let data = imageData {
+            cellImageView!.image = UIImage(data: data)
+        }
+        
         return cell
     }
 
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            deleteValueForChild("names", childKey: people[indexPath.row].snapshotKey)
-            people.removeAtIndex(indexPath.row)
+            deleteValueForChild("posts", childKey: posts[indexPath.row].snapshotKey)
+            posts.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let personToUpdate = people[indexPath.row]
+        postToUpdate = posts[indexPath.row]
+        self.performSegueWithIdentifier("postCreatorSegue", sender: self)
         
-        alertWithTextEntry("Update Name") { (text) in
-            self.updateChildValue(personToUpdate, updatedName: text)
-
-        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let destionationVC = segue.destinationViewController as? PostCreatorVC
+        destionationVC?.post = postToUpdate
     }
     
     //MARK: IBActions
-
-    @IBAction func addButtonPressed(sender: AnyObject) {
-        
-        alertWithTextEntry("Enter Name") { (text) in
-            self.saveTextToFirebase(text)
-        }
-    }
 
 }
