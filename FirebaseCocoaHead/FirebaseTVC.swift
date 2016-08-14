@@ -21,7 +21,7 @@ class FirebaseTVC: UITableViewController {
         
         firebaseReference = FIRDatabase.database().reference()
         
-        queryNamesFromFirebase()
+        queryPostsFromFirebase()
         listenForChildNodeChanges()
         
     }
@@ -49,42 +49,20 @@ class FirebaseTVC: UITableViewController {
     }
     
     //Query from Firebase
-    func queryNamesFromFirebase() {
-
+    func queryPostsFromFirebase() {
         let childRef = firebaseReference.child("posts")
         
         childRef.observeEventType(.ChildAdded) {
             (snapshot: FIRDataSnapshot) in
 
             if let value = snapshot.value {
-                
                 let post = Post(text: value["text"] as! String, photoURL: value["photoURL"] as! String, snapshotKey: snapshot.key)
                 self.posts.append(post)
                 self.tableView.reloadData()
             }
         }
     }
-    
-    //Update on Firebase
-    func updateChildValue(postToUpdate: Post, updatedText: String, updatedPhotoURL: String) {
-        
-        let childRef = firebaseReference.child("posts")
 
-        let childUpdates = [postToUpdate.snapshotKey:["text":updatedText, "photoURL": updatedPhotoURL]]
-        
-        childRef.updateChildValues(childUpdates)
-        
-    }
-    
-//    //Accepts a query to listen for a change.
-//    func listenForChildNodeChanges(query: FIRDatabaseQuery, completion:(result:FIRDataSnapshot)-> Void) {
-//
-//        query.observeEventType(.ChildChanged) {
-//            (snapshot) in
-//            completion(result: snapshot)
-//        }
-//    }
-//    
     //MARK: Helper Methods
     func alertWithTextEntry(title: String, completion:(text: String)-> Void) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
@@ -163,6 +141,4 @@ class FirebaseTVC: UITableViewController {
         destionationVC?.post = postToUpdate
     }
     
-    //MARK: IBActions
-
 }
