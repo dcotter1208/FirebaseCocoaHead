@@ -14,12 +14,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="129" id="Qw0-d0-6az">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="129" id="Qw0-d0-6az">
                                 <rect key="frame" x="0.0" y="92" width="320" height="129"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qw0-d0-6az" id="81G-w2-mnj">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="129"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="128.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" tag="200" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y6x-OM-4ZY">
@@ -29,7 +30,7 @@
                                             </constraints>
                                         </imageView>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="100" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="mUd-5I-Y4T">
-                                            <rect key="frame" x="123" y="11" width="189" height="107"/>
+                                            <rect key="frame" x="123" y="11" width="189" height="52"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -37,14 +38,15 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="y6x-OM-4ZY" firstAttribute="top" secondItem="81G-w2-mnj" secondAttribute="topMargin" constant="3" id="5IJ-9u-CcQ"/>
-                                        <constraint firstItem="mUd-5I-Y4T" firstAttribute="trailing" secondItem="81G-w2-mnj" secondAttribute="trailingMargin" id="E53-dg-yVm"/>
-                                        <constraint firstItem="y6x-OM-4ZY" firstAttribute="top" secondItem="mUd-5I-Y4T" secondAttribute="top" id="PHV-1d-KeS"/>
-                                        <constraint firstItem="y6x-OM-4ZY" firstAttribute="bottom" secondItem="mUd-5I-Y4T" secondAttribute="bottom" id="bpa-mq-2h4"/>
-                                        <constraint firstItem="mUd-5I-Y4T" firstAttribute="leading" secondItem="y6x-OM-4ZY" secondAttribute="trailing" constant="8" symbolic="YES" id="dyu-CK-iEJ"/>
+                                        <constraint firstItem="mUd-5I-Y4T" firstAttribute="leading" secondItem="y6x-OM-4ZY" secondAttribute="trailing" constant="8" symbolic="YES" id="BJM-Yv-9fU"/>
+                                        <constraint firstItem="mUd-5I-Y4T" firstAttribute="trailing" secondItem="81G-w2-mnj" secondAttribute="trailingMargin" id="GGF-5k-zuY"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="mUd-5I-Y4T" secondAttribute="bottom" constant="57.5" id="WEx-16-EoZ"/>
+                                        <constraint firstItem="mUd-5I-Y4T" firstAttribute="top" secondItem="y6x-OM-4ZY" secondAttribute="top" id="e3P-ep-qEo"/>
                                         <constraint firstItem="y6x-OM-4ZY" firstAttribute="leading" secondItem="81G-w2-mnj" secondAttribute="leadingMargin" id="yaL-jc-iyZ"/>
                                         <constraint firstItem="y6x-OM-4ZY" firstAttribute="centerY" secondItem="81G-w2-mnj" secondAttribute="centerY" id="zAu-rc-65z"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>

@@ -36,11 +36,19 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
         // Dispose of any resources that can be recreated.
     }
     
+    func resizeImage(image:UIImage, size: CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(size)
+        image.drawInRect(CGRectMake(0, 0, size.width, size.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
     func createDatabaseAndStorageRefs() {
         firebaseReference = FIRDatabase.database().reference()
         storage = FIRStorage.storage()
         firebaseStorageRef = storage.referenceForURL("gs://cocoahead-1f648.appspot.com")
-        
     }
     
     func setImageAndPostForUpdate() {
@@ -114,11 +122,10 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             postImageView.image = pickedImage
-            imageData = UIImageJPEGRepresentation(pickedImage, 1.0)!
+            imageData = UIImageJPEGRepresentation(resizeImage(pickedImage, size: CGSizeMake(pickedImage.size.width/8, pickedImage.size.height/8)), 1.0)!
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
     
     @IBAction func photoTapGesturePressed(sender: AnyObject) {
         presentCamera()
