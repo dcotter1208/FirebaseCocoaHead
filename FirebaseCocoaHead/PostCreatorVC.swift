@@ -127,7 +127,6 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
     @IBAction func photoTapGesturePressed(sender: AnyObject) {
         presentCamera()
     }

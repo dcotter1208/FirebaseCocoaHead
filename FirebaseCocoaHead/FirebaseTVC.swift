@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import Alamofire
+import AlamofireImage
 
 class FirebaseTVC: UITableViewController {
 
@@ -33,6 +35,16 @@ class FirebaseTVC: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func downloadPostImageFromFirebase(URL: String, completion:(result: UIImage) -> Void) {
+        Alamofire.request(.GET, URL)
+            .responseImage { response in
+
+            if let image = response.result.value {
+                completion(result: image)
+            }
+        }
     }
     
     //MARK: Firebase Methods
@@ -111,12 +123,11 @@ class FirebaseTVC: UITableViewController {
         
         cellTextView?.text = post.text
         
-        let imageData = NSData(contentsOfURL: NSURL(string: post.photoURL)!)
-        
-        if let data = imageData {
-            cellImageView!.image = UIImage(data: data)
+        downloadPostImageFromFirebase(post.photoURL) { (result) in
+
+            cellImageView!.image = result
         }
-        
+
         return cell
     }
 
