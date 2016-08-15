@@ -26,8 +26,6 @@ class FirebaseTVC: UITableViewController {
         
     }
     
-    
-    
     override func viewWillAppear(animated: Bool) {
         postToUpdate = nil
     }
