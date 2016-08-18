@@ -20,9 +20,7 @@ class FirebaseTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         firebaseReference = FIRDatabase.database().reference()
-        
         queryPostsFromFirebase()
         listenForChildNodeChanges()
         
@@ -47,15 +45,13 @@ class FirebaseTVC: UITableViewController {
         }
     }
     
+    
     //MARK: Firebase Methods
 
     //Remove from Firebase
     func deleteValueForChild(child: String, childKey: String) {
-        
         let childToRemove = firebaseReference.child(child).child(childKey)
-        
         childToRemove.removeValue()
-        
     }
     
     //Query from Firebase
@@ -73,29 +69,10 @@ class FirebaseTVC: UITableViewController {
         }
     }
 
-    //MARK: Helper Methods
-    func alertWithTextEntry(title: String, completion:(text: String)-> Void) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
-        alertController.addTextFieldWithConfigurationHandler(nil)
-        
-        let save = UIAlertAction(title: "Save", style: .Default) { (action) in
-            
-            let textfield = alertController.textFields![0] as UITextField
-            
-            if let text = textfield.text {
-                completion(text: text)
-            }
-        }
-        
-        alertController.addAction(save)
-        presentViewController(alertController, animated: true, completion: nil)
-    }
-
-    
+    //Listens for changes to a post.
     func listenForChildNodeChanges() {
         let childRef = self.firebaseReference.child("posts")
         childRef.observeEventType(.ChildChanged, withBlock: { (snapshot: FIRDataSnapshot) in
-
             let updatedPost = Post(text: snapshot.value!["text"] as! String, photoURL: snapshot.value!["photoURL"] as! String, snapshotKey: snapshot.key)
             
             for post in self.posts {
@@ -109,7 +86,7 @@ class FirebaseTVC: UITableViewController {
     }
     
     //MARK: TableView
-    
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
@@ -118,13 +95,10 @@ class FirebaseTVC: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         let cellImageView = cell.contentView.viewWithTag(200) as? UIImageView
         let cellTextView = cell.contentView.viewWithTag(100) as? UITextView
-        
         let post = posts[indexPath.row]
-        
         cellTextView?.text = post.text
         
         downloadPostImageFromFirebase(post.photoURL) { (result) in
-
             cellImageView!.image = result
         }
 

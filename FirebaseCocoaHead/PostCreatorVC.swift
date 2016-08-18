@@ -9,7 +9,8 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseStorage
-
+import Alamofire
+import AlamofireImage
 
 class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     @IBOutlet weak var postImageView: UIImageView!
@@ -45,16 +46,23 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
         return newImage
     }
     
+    //Creates references to database and storage
     func createDatabaseAndStorageRefs() {
         firebaseReference = FIRDatabase.database().reference()
         storage = FIRStorage.storage()
         firebaseStorageRef = storage.referenceForURL("gs://cocoahead-1f648.appspot.com")
     }
     
+    //if this is a post update then set the image and text with the post to be updated.
     func setImageAndPostForUpdate() {
         if let post = post {
-            let imageData = NSData(contentsOfURL: NSURL(string: post.photoURL)!)
-            postImageView.image = UIImage(data: imageData!)
+            Alamofire.request(.GET, post.photoURL)
+                .responseImage { response in
+                    
+                if let image = response.result.value {
+                    self.postImageView.image = image
+                }
+            }
             postTextView.text = post.text
         }
     }
@@ -73,8 +81,8 @@ class PostCreatorVC: UIViewController, UINavigationControllerDelegate, UIImagePi
 */
     func uploadPhotoToFirebase(imageAsData: NSData) {
         let uniqueID = NSUUID().UUIDString
-        let newImageReference = "images/\(uniqueID).jpg"
-        let imagesRef = firebaseStorageRef.child(newImageReference)
+
+        let imagesRef = firebaseStorageRef.child("images/\(uniqueID).jpg")
         
         let uploadTask = imagesRef.putData(imageAsData, metadata: nil) { (metaData:FIRStorageMetadata?, error: NSError?) in
             if (error != nil) {
